@@ -3,7 +3,7 @@
  * @package   Essential_Grid
  * @author    ThemePunch <info@themepunch.com>
  * @link      http://www.themepunch.com/essential/
- * @copyright 2016 ThemePunch
+ * @copyright 2020 ThemePunch
  */
  
 if( !defined( 'ABSPATH') ) exit();
@@ -91,7 +91,7 @@ if(!class_exists('PunchPost')) {
 					}
 					
 					global $imagenr;
-					if($imagenr==4) $imagenr = 1;
+					if($imagenr==10) $imagenr = 1;
 					$attach_id = $this->create_image('demoimage'.$imagenr++.'.jpg');
 					set_post_thumbnail( $this->TP_current_post_id, $attach_id );
 					

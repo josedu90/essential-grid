@@ -3,7 +3,7 @@
  * @package   Essential_Grid
  * @author    ThemePunch <info@themepunch.com>
  * @link      http://www.themepunch.com/essential/
- * @copyright 2016 ThemePunch
+ * @copyright 2020 ThemePunch
  */
 
 if( !defined( 'ABSPATH') ) exit();
@@ -112,7 +112,9 @@ class Essential_Grid_Meta {
 					$link_metas[$key]['m_type'] = 'link';
 				}
 			}
-			$meta = array_merge($meta, $link_metas);
+			if(is_array($link_metas) && !empty($link_metas)){
+				$meta = @array_merge($meta, $link_metas);
+			}
 		}
 		
 		return apply_filters('essgrid_get_all_meta', $meta, $links);
@@ -300,6 +302,7 @@ class Essential_Grid_Meta {
 								case 'alias':
 									$meta_value = $base->getVar($my_post, 'post_name');
 									break;
+								case 'description':
 								case 'content':
 									$meta_value = $base->getVar($my_post, 'post_content');
 									break;
@@ -517,6 +520,28 @@ class Essential_Grid_Meta {
 		return apply_filters('essgrid_get_custom_video_ratios', $ratio, $values);
 	}
 	
+	
+	/**
+	 * save all metas at once
+	 * @since: 3.0.0
+	 */
+	public function save_all_metas($metas){
+		
+		if(!empty($metas)){
+			foreach($metas as $k => $meta){
+				if(!isset($meta['handle']) || strlen($meta['handle']) < 3) return __('Wrong Handle received', EG_TEXTDOMAIN);
+				if(!isset($meta['name']) || strlen($meta['name']) < 3) return __('Wrong Name received', EG_TEXTDOMAIN);
+				if(!isset($meta['sort-type'])) $metas[$k]['sort-type'] = 'alphabetic';
+				
+				if($meta['type'] == 'select' || $meta['type'] == 'multi-select'){
+					if(!isset($meta['select']) || strlen($meta['select']) < 3) return __('Wrong Select received', EG_TEXTDOMAIN);
+				}
+			}
+		}
+		$do = update_option('esg-custom-meta', apply_filters('essgrid_add_new_meta_update', $metas));
+		
+		return true;
+	}
 }
 
 
@@ -655,6 +680,25 @@ class Essential_Grid_Meta_Linking {
 			$text = $metas;
 		
 		return apply_filters('essgrid_get_link_meta_value_by_handle', $text, $post_id, $handle);
+	}
+	
+	
+	/**
+	 * save all link metas at once
+	 * @since: 3.0.0
+	 */
+	public function save_all_link_metas($metas){
+		if(!empty($metas)){
+			foreach($metas as $k => $meta){
+				if(!isset($meta['handle']) || strlen($meta['handle']) < 3) return __('Wrong Handle received', EG_TEXTDOMAIN);
+				if(!isset($meta['name']) || strlen($meta['name']) < 3) return __('Wrong Name received', EG_TEXTDOMAIN);
+				if(!isset($meta['original']) || strlen($meta['original']) < 3) return __('Wrong Linking received', EG_TEXTDOMAIN);
+			}
+		}
+		
+		$do = update_option('esg-custom-link-meta', apply_filters('essgrid_add_all_link_meta', $metas));
+		
+		return true;
 	}
 	
 }

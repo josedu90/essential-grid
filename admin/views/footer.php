@@ -8,7 +8,7 @@
  * @package   Essential_Grid
  * @author    ThemePunch <info@themepunch.com>
  * @link      http://www.themepunch.com/essential/
- * @copyright 2016 ThemePunch
+ * @copyright 2020 ThemePunch
  */
 
 if( !defined( 'ABSPATH') ) exit();
@@ -22,19 +22,14 @@ $tooltips = get_option('tp_eg_tooltips', 'true');
 <script type="text/javascript">
 	var token = '<?php echo wp_create_nonce("Essential_Grid_actions"); ?>';
 	var es_do_tooltipser = <?php echo $tooltips; ?>;
+	<?php
+	if($tooltips == 'true'){
+	?>
+	if (document.readyState === "loading") window.addEventListener('DOMContentLoaded',function() {	AdminEssentials.initToolTipser(); }); else AdminEssentials.initToolTipser();			
+	<?php
+	}
+	?>
 	
-	jQuery(document).ready(function() {
-		
-		AdminEssentials.initAccordion();
-		
-		<?php
-		if($tooltips == 'true'){
-		?>
-        AdminEssentials.initToolTipser();
-		<?php
-		}
-		?>
-	});
 </script>
 
 <div id="waitaminute">

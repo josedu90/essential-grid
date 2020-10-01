@@ -3,7 +3,7 @@
  * @package   Essential_Grid
  * @author    ThemePunch <info@themepunch.com>
  * @link      http://www.themepunch.com/essential/
- * @copyright 2016 ThemePunch
+ * @copyright 2020 ThemePunch
  */
 
 if( !defined( 'ABSPATH') ) exit();
@@ -316,6 +316,16 @@ class Essential_Grid_Navigation {
 		$classes = apply_filters('essgrid_set_special_class', $classes);
 		
 		$this->special_class .= ' '.$classes;
+		
+	}
+
+	/**
+	 * Get special class to wrapper
+	 * @since: 2.3.7
+	 */
+	public function get_special_class(){
+		
+		return $this->special_class;
 		
 	}
 	
